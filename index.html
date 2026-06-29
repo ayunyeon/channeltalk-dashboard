@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>채널톡 세팅 대시보드</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#1a1d24; --card2:#222631; --line:#2c313c;
+    --text:#e8eaed; --muted:#9aa1ad; --accent:#3b82f6; --done:#22c55e;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.6;
+  }
+  .wrap{max-width:860px; margin:0 auto; padding:32px 20px 80px;}
+  header{margin-bottom:24px;}
+  h1{font-size:26px; margin:0 0 6px;}
+  .sub{color:var(--muted); font-size:14px;}
+  .progress-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 20px; margin:20px 0 28px;
+  }
+  .progress-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;}
+  .progress-top strong{font-size:20px;}
+  .bar{height:10px; background:var(--card2); border-radius:99px; overflow:hidden;}
+  .bar > i{display:block; height:100%; width:0; background:var(--done); transition:width .3s ease; border-radius:99px;}
+  .group{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    margin-bottom:18px; overflow:hidden;
+  }
+  .group > h2{
+    font-size:16px; margin:0; padding:16px 20px; background:var(--card2);
+    border-bottom:1px solid var(--line); display:flex; align-items:center; gap:8px;
+  }
+  .group .gcount{margin-left:auto; font-size:13px; color:var(--muted); font-weight:400;}
+  ul{list-style:none; margin:0; padding:8px 0;}
+  li{padding:0;}
+  .item{display:flex; gap:12px; padding:12px 20px; align-items:flex-start;}
+  .item:hover{background:rgba(255,255,255,.02);}
+  .item input[type=checkbox]{
+    width:20px; height:20px; margin-top:2px; accent-color:var(--done); cursor:pointer; flex-shrink:0;
+  }
+  .item .body{flex:1;}
+  .item .title{font-size:15px; cursor:pointer;}
+  .item .desc{font-size:13px; color:var(--muted); margin-top:2px;}
+  .item.done .title{text-decoration:line-through; color:var(--muted);}
+  .item textarea{
+    width:100%; margin-top:8px; background:var(--bg); color:var(--text);
+    border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:13px;
+    resize:vertical; min-height:34px; font-family:inherit;
+  }
+  .item a{color:var(--accent); text-decoration:none;}
+  .item a:hover{text-decoration:underline;}
+  footer{margin-top:32px; color:var(--muted); font-size:13px; text-align:center;}
+  .reset{
+    background:none; border:1px solid var(--line); color:var(--muted);
+    padding:6px 14px; border-radius:8px; cursor:pointer; font-size:13px;
+  }
+  .reset:hover{border-color:var(--muted); color:var(--text);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>📨 채널톡 세팅 대시보드</h1>
+    <div class="sub">세팅 단계와 진행 상황을 한눈에. 체크와 메모는 이 브라우저에 자동 저장돼요.</div>
+  </header>
+
+  <div class="progress-card">
+    <div class="progress-top">
+      <span class="sub">전체 진행률</span>
+      <strong id="pct">0%</strong>
+    </div>
+    <div class="bar"><i id="barFill"></i></div>
+  </div>
+
+  <div id="board"></div>
+
+  <footer>
+    <button class="reset" id="resetBtn">진행상황 초기화</button>
+    <div style="margin-top:14px;">채널톡 공식 가이드 · <a href="https://channel.io/ko/guide" target="_blank" style="color:var(--accent)">channel.io/ko/guide</a></div>
+  </footer>
+</div>
+
+<script>
+// 세팅 단계 정의 — 필요에 맞게 자유롭게 수정하세요
+const DATA = [
+  {
+    group:"1. 계정 · 채널 만들기",
+    items:[
+      {id:"signup", title:"채널톡 회원가입 & 채널 생성", desc:"channel.io 에서 가입하고 우리 비즈니스 채널 생성"},
+      {id:"bizinfo", title:"기본 정보 입력", desc:"채널명, 로고, 도메인, 카테고리 설정"},
+      {id:"plan", title:"요금제 확인", desc:"무료/X-small 등 시작 요금제 결정"},
+    ]
+  },
+  {
+    group:"2. 설치 (웹사이트 연동)",
+    items:[
+      {id:"script", title:"설치 스크립트 발급", desc:"설정 > 채널 > 설치하기 에서 코드 복사"},
+      {id:"embed", title:"웹사이트에 스크립트 삽입", desc:"&lt;head&gt; 또는 &lt;/body&gt; 직전에 붙여넣기 (또는 GTM/플랫폼 플러그인)"},
+      {id:"verify", title:"설치 확인", desc:"사이트에서 채팅 버튼이 뜨는지 테스트"},
+      {id:"member", title:"멤버 식별 연동(선택)", desc:"로그인 유저 정보(boot) 연동 — 개발 필요"},
+    ]
+  },
+  {
+    group:"3. 운영 기본 설정",
+    items:[
+      {id:"team", title:"운영자 초대 & 권한", desc:"팀원 초대, 매니저/오너 권한 배정"},
+      {id:"hours", title:"운영시간 설정", desc:"상담 가능 시간 / 부재중 안내"},
+      {id:"greeting", title:"인사말 · 환영 메시지", desc:"첫 진입 시 보여줄 메시지"},
+      {id:"away", title:"부재중 메시지", desc:"운영시간 외 자동 안내문"},
+    ]
+  },
+  {
+    group:"4. 자동화 · 봇",
+    items:[
+      {id:"alf", title:"ALF / 서포트봇 설정", desc:"자주 묻는 질문 자동응답 구성"},
+      {id:"faq", title:"FAQ · 도움말 작성", desc:"고객 셀프서비스용 자료"},
+      {id:"workflow", title:"워크플로우(자동 배정/태그)", desc:"상담 분류 및 자동화 규칙"},
+    ]
+  },
+  {
+    group:"5. 마케팅 · 확장",
+    items:[
+      {id:"marketing", title:"마케팅 메시지/팝업", desc:"타겟 고객 대상 캠페인"},
+      {id:"channels", title:"외부 채널 연동", desc:"인스타/카카오/이메일 등 통합 인박스"},
+      {id:"mobile", title:"모바일 앱 SDK 연동(선택)", desc:"iOS/Android 앱에 채널톡 SDK 적용"},
+      {id:"stats", title:"통계 · 리포트 확인", desc:"응답시간/만족도 등 지표 모니터링"},
+    ]
+  }
+];
+
+const KEY = "channeltalk-dashboard-v1";
+const state = JSON.parse(localStorage.getItem(KEY) || "{}");
+
+const board = document.getElementById("board");
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); render(); }
+
+function render(){
+  let total=0, done=0;
+  DATA.forEach(g=>{ g.items.forEach(it=>{ total++; if(state[it.id]?.done) done++; }); });
+  const pct = total? Math.round(done/total*100):0;
+  document.getElementById("pct").textContent = pct + "%  (" + done + "/" + total + ")";
+  document.getElementById("barFill").style.width = pct + "%";
+}
+
+DATA.forEach(g=>{
+  const gEl = document.createElement("div");
+  gEl.className="group";
+  const gdone = g.items.filter(it=>state[it.id]?.done).length;
+  gEl.innerHTML = `<h2>${g.group}<span class="gcount">${gdone}/${g.items.length}</span></h2>`;
+  const ul = document.createElement("ul");
+  g.items.forEach(it=>{
+    const li = document.createElement("li");
+    const checked = state[it.id]?.done ? "checked":"";
+    const note = state[it.id]?.note || "";
+    li.innerHTML = `
+      <div class="item ${checked?'done':''}">
+        <input type="checkbox" ${checked} data-id="${it.id}">
+        <div class="body">
+          <div class="title" data-id="${it.id}">${it.title}</div>
+          <div class="desc">${it.desc}</div>
+          <textarea placeholder="메모 (상태, 담당자, 링크 등)" data-note="${it.id}">${note}</textarea>
+        </div>
+      </div>`;
+    ul.appendChild(li);
+  });
+  gEl.appendChild(ul);
+  board.appendChild(gEl);
+});
+
+board.addEventListener("change", e=>{
+  const id = e.target.dataset.id;
+  if(id){ state[id]=state[id]||{}; state[id].done=e.target.checked; save(); }
+});
+board.addEventListener("click", e=>{
+  const id = e.target.dataset.id;
+  if(id && e.target.classList.contains("title")){
+    state[id]=state[id]||{}; state[id].done=!state[id].done; save();
+  }
+});
+board.addEventListener("input", e=>{
+  const id = e.target.dataset.note;
+  if(id){ state[id]=state[id]||{}; state[id].note=e.target.value; localStorage.setItem(KEY, JSON.stringify(state)); }
+});
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  if(confirm("진행상황과 메모를 모두 초기화할까요?")){
+    localStorage.removeItem(KEY);
+    for(const k in state) delete state[k];
+    location.reload();
+  }
+});
+
+render();
+</script>
+</body>
+</html>
