@@ -73,7 +73,37 @@
   .pstep .pdesc{font-size:13px; color:var(--muted);}
   .pstep .ptag{margin-top:12px; font-size:11px; color:var(--muted);}
   .pstep.now .ptag{color:var(--accent);}
-  .section-label{font-size:13px; color:var(--muted); margin:0 0 12px; font-weight:600; letter-spacing:.3px;}
+  .section-label{font-size:13px; color:var(--muted); margin:28px 0 12px; font-weight:600; letter-spacing:.3px;}
+  /* 채널톡 상담시간 外 미리보기 (실제 화면 재현) */
+  .ct-preview{display:flex; justify-content:center; padding:24px 0 8px;}
+  .ct-popup{
+    width:340px; background:#fff; color:#1a1a1a; border-radius:20px; padding:16px;
+    box-shadow:0 12px 40px rgba(0,0,0,.35); font-size:14px; position:relative;
+  }
+  .ct-header{display:flex; align-items:center; gap:10px; padding:6px 4px 14px;}
+  .ct-avatar{
+    width:42px; height:42px; border-radius:50%; background:#16321f; color:#cdb47a;
+    display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; flex-shrink:0;
+  }
+  .ct-avatar.sm{width:24px; height:24px; font-size:7px;}
+  .ct-name{font-weight:700; font-size:16px;}
+  .ct-hours{color:#8a8f98; font-size:12px;}
+  .ct-bubble{background:#f4f5f7; border-radius:14px; padding:14px;}
+  .ct-bhead{display:flex; align-items:center; gap:6px; margin-bottom:8px; font-size:12px; color:#444;}
+  .ct-msg{margin:6px 0; line-height:1.5;}
+  .ct-cta{
+    width:100%; margin-top:14px; padding:13px; border:0; border-radius:12px;
+    background:#5ec98a; color:#0f3d24; font-weight:700; font-size:15px; cursor:pointer;
+  }
+  .ct-op{text-align:center; color:#8a8f98; font-size:12px; margin-top:12px;}
+  .ct-other{display:flex; align-items:center; gap:8px; color:#8a8f98; font-size:13px; padding:16px 4px 4px;}
+  .ct-ic{width:26px; height:26px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:13px; margin-left:auto;}
+  .ct-ic + .ct-ic{margin-left:6px;}
+  .ct-ic.kakao{background:#fae100;} .ct-ic.call{background:#cfe3ff;}
+  .ct-foot{text-align:center; color:#b5b9c0; font-size:11px; padding:14px 0;}
+  .ct-nav{display:flex; justify-content:space-around; border-top:1px solid #eee; padding-top:12px; color:#9aa1ad; font-size:11px; text-align:center;}
+  .ct-nav span{line-height:1.6;}
+  .ct-caption{text-align:center; color:var(--muted); font-size:12px; margin-top:10px;}
   footer{margin-top:32px; color:var(--muted); font-size:13px; text-align:center;}
   .reset{
     background:none; border:1px solid var(--line); color:var(--muted);
@@ -123,6 +153,31 @@
   </div>
 
   <div id="board"></div>
+
+  <div class="section-label">🌙 상담시간 外 — 채널톡 상담버튼 누르면 이렇게 떠요</div>
+  <div class="ct-preview">
+    <div class="ct-popup">
+      <div class="ct-header">
+        <div class="ct-avatar">COWORK<br>CITY</div>
+        <div>
+          <div class="ct-name">코워크패밀리</div>
+          <div class="ct-hours">운영시간 보기 ›</div>
+        </div>
+      </div>
+      <div class="ct-bubble">
+        <div class="ct-bhead"><span class="ct-avatar sm">CW</span><b>코워크패밀리</b></div>
+        <div class="ct-msg">안녕하세요 대표님!</div>
+        <div class="ct-msg">원활한 상담을 위하여 성함, 연락처, 이메일을 남겨주세요 😀</div>
+        <div class="ct-msg">성함:<br>연락처:<br>이메일:…</div>
+        <button class="ct-cta">문의하기 ➤</button>
+        <div class="ct-op">🕐 내일 오전 9:00부터 운영해요</div>
+      </div>
+      <div class="ct-other">다른 방법으로 문의<span class="ct-ic kakao">💬</span><span class="ct-ic call">📞</span></div>
+      <div class="ct-foot">ⓒ 채널톡 이용중</div>
+      <div class="ct-nav"><span>🏠<br>홈</span><span>💬<br>대화</span><span>⚙️<br>설정</span></div>
+    </div>
+  </div>
+  <div class="ct-caption">※ 실제 채널톡 화면 재현본 (상담시간 외 상태)</div>
 
   <footer>
     <button class="reset" id="resetBtn">진행상황 초기화</button>
