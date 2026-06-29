@@ -104,6 +104,19 @@
   .ct-nav{display:flex; justify-content:space-around; border-top:1px solid #eee; padding-top:12px; color:#9aa1ad; font-size:11px; text-align:center;}
   .ct-nav span{line-height:1.6;}
   .ct-caption{text-align:center; color:var(--muted); font-size:12px; margin-top:10px;}
+  /* Before / After 비교 */
+  .ba-wrap{display:flex; gap:18px; justify-content:center; align-items:flex-start; flex-wrap:wrap;}
+  .ba-col{display:flex; flex-direction:column; align-items:center; gap:12px; max-width:340px;}
+  .ba-badge{font-size:12px; font-weight:700; padding:5px 14px; border-radius:99px; letter-spacing:.5px;}
+  .ba-badge.before{background:#3a2530; color:#ff9db1; border:1px solid #5a3a48;}
+  .ba-badge.after{background:#13351f; color:#5ec98a; border:1px solid #2c6b44;}
+  .ba-arrow{align-self:center; color:var(--muted); font-size:26px; padding:0 4px;}
+  @media (max-width:760px){ .ba-arrow{transform:rotate(90deg);} }
+  .ct-opt{
+    display:block; width:100%; text-align:left; background:#fff; border:1px solid #e3e5e9;
+    border-radius:11px; padding:11px 14px; margin:8px 0 0; font-size:14px; color:#333; cursor:pointer;
+  }
+  .ct-opt:first-of-type{margin-top:0;}
   footer{margin-top:32px; color:var(--muted); font-size:13px; text-align:center;}
   .reset{
     background:none; border:1px solid var(--line); color:var(--muted);
@@ -154,30 +167,66 @@
 
   <div id="board"></div>
 
-  <div class="section-label">🌙 상담시간 外 — 채널톡 상담버튼 누르면 이렇게 떠요</div>
-  <div class="ct-preview">
-    <div class="ct-popup">
-      <div class="ct-header">
-        <div class="ct-avatar">COWORK<br>CITY</div>
-        <div>
-          <div class="ct-name">코워크패밀리</div>
-          <div class="ct-hours">운영시간 보기 ›</div>
+  <div class="section-label">🗓️ 6/30 채널톡 세팅 — 이렇게 변경했어요 (Before → After)</div>
+  <div class="ba-wrap">
+
+    <!-- BEFORE -->
+    <div class="ba-col">
+      <span class="ba-badge before">BEFORE</span>
+      <div class="ct-popup">
+        <div class="ct-header">
+          <div class="ct-avatar">COWORK<br>CITY</div>
+          <div>
+            <div class="ct-name">코워크패밀리</div>
+            <div class="ct-hours">운영시간 보기 ›</div>
+          </div>
         </div>
+        <div class="ct-bubble">
+          <div class="ct-bhead"><span class="ct-avatar sm">CW</span><b>코워크패밀리</b></div>
+          <div class="ct-msg">안녕하세요 대표님!</div>
+          <div class="ct-msg">원활한 상담을 위하여 성함, 연락처, 이메일을 남겨주세요 😀</div>
+          <div class="ct-msg">성함:<br>연락처:<br>이메일:…</div>
+          <button class="ct-cta">문의하기 ➤</button>
+          <div class="ct-op">🕐 내일 오전 9:00부터 운영해요</div>
+        </div>
+        <div class="ct-other">다른 방법으로 문의<span class="ct-ic kakao">💬</span><span class="ct-ic call">📞</span></div>
+        <div class="ct-foot">ⓒ 채널톡 이용중</div>
+        <div class="ct-nav"><span>🏠<br>홈</span><span>💬<br>대화</span><span>⚙️<br>설정</span></div>
       </div>
-      <div class="ct-bubble">
-        <div class="ct-bhead"><span class="ct-avatar sm">CW</span><b>코워크패밀리</b></div>
-        <div class="ct-msg">안녕하세요 대표님!</div>
-        <div class="ct-msg">원활한 상담을 위하여 성함, 연락처, 이메일을 남겨주세요 😀</div>
-        <div class="ct-msg">성함:<br>연락처:<br>이메일:…</div>
-        <button class="ct-cta">문의하기 ➤</button>
-        <div class="ct-op">🕐 내일 오전 9:00부터 운영해요</div>
-      </div>
-      <div class="ct-other">다른 방법으로 문의<span class="ct-ic kakao">💬</span><span class="ct-ic call">📞</span></div>
-      <div class="ct-foot">ⓒ 채널톡 이용중</div>
-      <div class="ct-nav"><span>🏠<br>홈</span><span>💬<br>대화</span><span>⚙️<br>설정</span></div>
+      <div class="ct-caption">정보(성함·연락처·이메일)만 받고 끝<br>→ 고객은 궁금한 걸 바로 못 풀고 기다려야 함</div>
     </div>
+
+    <div class="ba-arrow">➜</div>
+
+    <!-- AFTER -->
+    <div class="ba-col">
+      <span class="ba-badge after">AFTER</span>
+      <div class="ct-popup">
+        <div class="ct-header">
+          <div class="ct-avatar">COWORK<br>CITY</div>
+          <div>
+            <div class="ct-name">코워크패밀리</div>
+            <div class="ct-hours">운영시간 보기 ›</div>
+          </div>
+        </div>
+        <div class="ct-bubble">
+          <div class="ct-bhead"><span class="ct-avatar sm">CW</span><b>코워크패밀리</b></div>
+          <div class="ct-msg">안녕하세요, 코워크패밀리입니다 😊</div>
+          <div class="ct-msg">궁금한 내용을 선택해 주세요. 바로 답변을 보여드려요!</div>
+          <button class="ct-opt">🏪 입점 문의</button>
+          <button class="ct-opt">📦 이용·주문 안내</button>
+          <button class="ct-opt">🕐 운영시간·위치</button>
+          <button class="ct-opt">❓ 자주 묻는 질문</button>
+          <button class="ct-cta">🙋 상담원 연결하기</button>
+        </div>
+        <div class="ct-other">다른 방법으로 문의<span class="ct-ic kakao">💬</span><span class="ct-ic call">📞</span></div>
+        <div class="ct-foot">ⓒ 채널톡 이용중</div>
+        <div class="ct-nav"><span>🏠<br>홈</span><span>💬<br>대화</span><span>⚙️<br>설정</span></div>
+      </div>
+      <div class="ct-caption">버튼 클릭 → 맞는 답변 자동 표시 + 상담원 연결<br>→ 고객이 궁금한 점을 바로 해결</div>
+    </div>
+
   </div>
-  <div class="ct-caption">※ 실제 채널톡 화면 재현본 (상담시간 외 상태)</div>
 
   <footer>
     <button class="reset" id="resetBtn">진행상황 초기화</button>
