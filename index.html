@@ -54,6 +54,26 @@
   }
   .item a{color:var(--accent); text-decoration:none;}
   .item a:hover{text-decoration:underline;}
+  /* 파이프라인 박스 */
+  .pipeline{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:0 0 28px;}
+  @media (max-width:680px){ .pipeline{grid-template-columns:1fr;} }
+  .pstep{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 16px 18px; position:relative; display:flex; flex-direction:column;
+  }
+  .pstep .pnum{
+    width:26px; height:26px; border-radius:99px; background:var(--card2); color:var(--muted);
+    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; margin-bottom:10px;
+  }
+  .pstep.now{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset;}
+  .pstep.now .pnum{background:var(--accent); color:#fff;}
+  .pstep .pwhen{font-size:12px; color:var(--muted); margin-bottom:4px;}
+  .pstep.now .pwhen{color:var(--accent); font-weight:600;}
+  .pstep .ptitle{font-size:15px; font-weight:600; margin-bottom:6px;}
+  .pstep .pdesc{font-size:13px; color:var(--muted);}
+  .pstep .ptag{margin-top:12px; font-size:11px; color:var(--muted);}
+  .pstep.now .ptag{color:var(--accent);}
+  .section-label{font-size:13px; color:var(--muted); margin:0 0 12px; font-weight:600; letter-spacing:.3px;}
   footer{margin-top:32px; color:var(--muted); font-size:13px; text-align:center;}
   .reset{
     background:none; border:1px solid var(--line); color:var(--muted);
@@ -68,6 +88,31 @@
     <h1>📨 채널톡 세팅 대시보드</h1>
     <div class="sub">세팅 단계와 진행 상황을 한눈에. 체크와 메모는 이 브라우저에 자동 저장돼요.</div>
   </header>
+
+  <div class="section-label">🗺️ 진행 파이프라인</div>
+  <div class="pipeline">
+    <div class="pstep now">
+      <div class="pnum">1</div>
+      <div class="pwhen">6/30 ~ 7/1 · 진행 중</div>
+      <div class="ptitle">채널톡 ALF · 봇 세팅</div>
+      <div class="pdesc">ALF/서포트봇, 자동응답 등 채널톡 챗봇 세팅 위주로 작업</div>
+      <div class="ptag">● NOW</div>
+    </div>
+    <div class="pstep">
+      <div class="pnum">2</div>
+      <div class="pwhen">다음</div>
+      <div class="ptitle">홈페이지 리드 수집 추가</div>
+      <div class="pdesc">홈페이지에서 고객 리드(문의/신청)를 받는 폼·플로우 연동</div>
+      <div class="ptag">예정</div>
+    </div>
+    <div class="pstep">
+      <div class="pnum">3</div>
+      <div class="pwhen">그 다음</div>
+      <div class="ptitle">솔라피 알림톡 연결</div>
+      <div class="pdesc">솔라피(Solapi) 카카오 알림톡 연동 — 리드 발생 시 자동 발송</div>
+      <div class="ptag">예정</div>
+    </div>
+  </div>
 
   <div class="progress-card">
     <div class="progress-top">
